@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/esso/static/css/main.63ed89b8.css",
+    "main.js": "/esso/static/js/main.0bd7e463.js",
+    "static/js/453.24f2f915.chunk.js": "/esso/static/js/453.24f2f915.chunk.js",
+    "index.html": "/esso/index.html",
+    "main.63ed89b8.css.map": "/esso/static/css/main.63ed89b8.css.map",
+    "main.0bd7e463.js.map": "/esso/static/js/main.0bd7e463.js.map",
+    "453.24f2f915.chunk.js.map": "/esso/static/js/453.24f2f915.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.63ed89b8.css",
+    "static/js/main.0bd7e463.js"
+  ]
+}

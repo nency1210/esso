@@ -1,0 +1,95 @@
+/* TillForm.css */
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+}
+
+.form-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  margin-bottom: 10px;
+  font-size: 24px;
+  color: #444;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-row label {
+  flex: 1;
+  font-size: 14px;
+  color: #666;
+}
+
+.form-row input[type="text"],
+.form-row input[type="number"] {
+  flex: 1;
+  max-width: 200px; /* Adjust according to your design */
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-row span {
+  flex: 1;
+  text-align: right;
+  font-size: 14px;
+  color: #444;
+}
+
+.total {
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: right;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 14px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button[type="button"] {
+  background: #dc3545;
+}
+
+.link-button {
+  display: inline-block;
+  padding: 10px 15px;
+  margin-top: 10px;
+  background: #28a745;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  text-align: center;
+}

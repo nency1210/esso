@@ -56,6 +56,13 @@ const LottoForm = () => {
 
     setFormData(updatedFormData);
 };
+const handleNameChange = (e) => {
+  const { name, value } = e.target;
+  setFormData(prevState => ({
+    ...prevState,
+    [name]: value
+  }));
+};
 const handleReset = () => {
     setFormData(initialFormData);
     localStorage.removeItem('lottoFormData');
@@ -86,7 +93,7 @@ return (
             id="name"
             name="name"
             value={formData.name}
-            onChange={handleChange}
+            onChange={handleNameChange}
             required
           />
         </div>

@@ -88,7 +88,7 @@ function TillForm() {
   };
 
   const calculateTotal = () => {
-    let total = 0;
+    let total = -284;
     for (const denomination in formData.cash) {
       const quantity = parseFloat(formData.cash[denomination]) || 0;
       total += denomination * quantity;

@@ -41,25 +41,26 @@ const LottoForm = () => {
   }, [formData]);
 
   const handleChange = (e, denomination, type) => {
-    const value = parseFloat(e.target.value) || '';
+    const value = e.target.value === '' ? '' : parseFloat(e.target.value);
     const updatedFormData = { ...formData };
 
     updatedFormData.lotto[denomination][type] = value;
 
     if (type === 'add' || type === 'close') {
-        if (updatedFormData.lotto[denomination].close === 0){
-            updatedFormData.lotto[denomination].sold = '';}
-            else{
-      updatedFormData.lotto[denomination].sold =
-        updatedFormData.lotto[denomination].add -
-        updatedFormData.lotto[denomination].close;}
-      updatedFormData.lotto[denomination].dollar =
-        denomination * updatedFormData.lotto[denomination].sold;
+      const addValue = parseFloat(updatedFormData.lotto[denomination].add) || '';
+      const closeValue = parseFloat(updatedFormData.lotto[denomination].close) || '';
+
+      if (updatedFormData.lotto[denomination].close === '') {
+        updatedFormData.lotto[denomination].sold = '';
+      } else {
+        updatedFormData.lotto[denomination].sold = addValue - closeValue;
+      }
+
+      updatedFormData.lotto[denomination].dollar = denomination * updatedFormData.lotto[denomination].sold;
     }
 
     setFormData(updatedFormData);
-};
-const handleReset = () => {
+  };const handleReset = () => {
     setFormData(initialFormData);
     localStorage.removeItem('lottoFormData');
   };

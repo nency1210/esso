@@ -16,7 +16,7 @@ const LottoForm = () => {
         open: '',
         add: '',
         close: '',
-        sold: '',
+        sold: 0,
         dollar: 0,
       };
       return acc;
@@ -49,11 +49,11 @@ const LottoForm = () => {
       updatedFormData.lotto[denomination][type] = value;
 
       if (type === 'add' || type === 'close') {
-        const addValue = parseFloat(updatedFormData.lotto[denomination].add) || '';
-        const closeValue = parseFloat(updatedFormData.lotto[denomination].close) || '';
+        const addValue = parseFloat(updatedFormData.lotto[denomination].add) || 0;
+        const closeValue = parseFloat(updatedFormData.lotto[denomination].close) || 0;
 
-        if (updatedFormData.lotto[denomination].close === '') {
-          updatedFormData.lotto[denomination].sold = '';
+        if (updatedFormData.lotto[denomination].close === '' || updatedFormData.lotto[denomination].close === 0 ) {
+          updatedFormData.lotto[denomination].sold = 0;
         } else {
           updatedFormData.lotto[denomination].sold = addValue - closeValue;
         }

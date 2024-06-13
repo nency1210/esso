@@ -41,18 +41,18 @@ const LottoForm = () => {
     localStorage.setItem('lottoFormData', JSON.stringify(formData));
   }, [formData]);
 
-  const handleChange = (e, denomination, type) => {
+ const handleChange = (e, denomination, type) => {
     const value = e.target.value === '' ? '' : parseFloat(e.target.value);
     const updatedFormData = { ...formData };
 
-    if (denomination) {
+    if (denomination !== undefined) {
       updatedFormData.lotto[denomination][type] = value;
 
       if (type === 'add' || type === 'close') {
         const addValue = parseFloat(updatedFormData.lotto[denomination].add) || 0;
         const closeValue = parseFloat(updatedFormData.lotto[denomination].close) || 0;
 
-        if (updatedFormData.lotto[denomination].close === '' || updatedFormData.lotto[denomination].close === 0 ) {
+        if (updatedFormData.lotto[denomination].close === '' || updatedFormData.lotto[denomination].close === 0) {
           updatedFormData.lotto[denomination].sold = 0;
         } else {
           updatedFormData.lotto[denomination].sold = addValue - closeValue;
@@ -66,6 +66,7 @@ const LottoForm = () => {
 
     setFormData(updatedFormData);
   };
+
 
   const handleReset = () => {
     setFormData(initialFormData);

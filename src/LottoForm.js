@@ -47,7 +47,9 @@ const LottoForm = () => {
     updatedFormData.lotto[denomination][type] = value;
 
     if (type === 'add' || type === 'close') {
-      if(updatedFormData.lotto[denomination].close > 0){
+        if (updatedFormData.lotto[denomination].close==0){
+            updatedFormData.lotto[denomination].sold = '';}
+            else{
       updatedFormData.lotto[denomination].sold =
         updatedFormData.lotto[denomination].add -
         updatedFormData.lotto[denomination].close;}
@@ -56,13 +58,6 @@ const LottoForm = () => {
     }
 
     setFormData(updatedFormData);
-};
-const handleNameChange = (e) => {
-  const { name, value } = e.target;
-  setFormData(prevState => ({
-    ...prevState,
-    [name]: value
-  }));
 };
 const handleReset = () => {
     setFormData(initialFormData);
@@ -94,7 +89,7 @@ return (
             id="name"
             name="name"
             value={formData.name}
-            onChange={handleNameChange}
+            onChange={handleChange}
             required
           />
         </div>

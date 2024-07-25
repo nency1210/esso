@@ -65,7 +65,9 @@ const LottoForm = () => {
             denomination * updatedFormData.lotto[denomination].sold;
         }
       }
-    };
+    }
+    setFormData(updatedFormData);
+  };
     
   const handleReset = () => {
     setFormData(initialFormData);

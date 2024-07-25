@@ -15,7 +15,7 @@ const LottoForm = () => {
       acc[denomination] = {
         open: '',
         add: '',
-        close: '',
+        close: 0,
         sold: '',
         dollar: 0,
       };
@@ -48,13 +48,13 @@ const LottoForm = () => {
     const updatedFormData = { ...formData };
 
     if (name === 'name' || name === 'payout' || name === 'lotterySale') {
-      updatedFormData[name] = parseFloat(value) || value;
+      updatedFormData[name] = value;
     } else {
       const numValue = parseFloat(value) || 0;
       updatedFormData.lotto[denomination][type] = numValue;
 
       if (type === 'add' || type === 'close') {
-        if (updatedFormData.lotto[denomination].close === 0 || updatedFormData.lotto[denomination].close === '' ) {
+        if (updatedFormData.lotto[denomination].close === 0 ) {
           updatedFormData.lotto[denomination].sold = 0;
           updatedFormData.lotto[denomination].dollar = denomination * updatedFormData.lotto[denomination].add;
         } else {
@@ -145,26 +145,26 @@ const LottoForm = () => {
             <tr>
               <td colSpan="2">
                 <div className="form-row">
-                  <div className="input-group">
-                    <label>Pay-out</label>
-                    <input
-                      type="number"
-                      name="payout"
-                      value={formData.payout}
-                      onChange={handleChange}
-                      placeholder="Enter amount"
-                    />
-                  </div>
-                  <div className="input-group">
-                    <label>Lottery sale</label>
-                    <input
-                      type="number"
-                      name="lotterySale"
-                      value={formData.lotterySale}
-                      onChange={handleChange}
-                      placeholder="Enter amount"
-                    />
-                  </div>
+                 <div className="input-group">
+  <label>Pay-out</label>
+  <input
+    type="number"
+    name="payout"
+    value={formData.payout}
+    onChange={(e) => handleChange(e)}
+    placeholder="Enter amount"
+  />
+</div>
+<div className="input-group">
+  <label>Lottery sale</label>
+  <input
+    type="number"
+    name="lotterySale"
+    value={formData.lotterySale}
+    onChange={(e) => handleChange(e)}
+    placeholder="Enter amount"
+  />
+</div>
                 </div>
               </td>
               <td colSpan="2">Total</td>

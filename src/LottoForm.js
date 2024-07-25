@@ -5,15 +5,15 @@ import { Link } from 'react-router-dom';
 const LottoForm = () => {
   const denominations = [2, 3, 5, 10, 20, 25, 30, 50];
   const currentDate = new Date();
-  const offset = currentDate.getTimezoneOffset() * 60000; 
-  const localDate = new Date(currentDate.getTime() - offset); 
+  const offset = currentDate.getTimezoneOffset() * 60000;
+  const localDate = new Date(currentDate.getTime() - offset);
 
   const initialFormData = {
     name: '',
     date: localDate.toISOString().split('T')[0],
     lotto: denominations.reduce((acc, denomination) => {
       acc[denomination] = {
-        open: '' ,
+        open: '',
         add: '',
         close: '',
         sold: '',
@@ -26,8 +26,13 @@ const LottoForm = () => {
   };
 
   const [formData, setFormData] = useState(() => {
-    const storedFormData = localStorage.getItem('lottoFormData');
-    return storedFormData ? JSON.parse(storedFormData) : initialFormData;
+    try {
+      const storedFormData = localStorage.getItem('lottoFormData');
+      return storedFormData ? JSON.parse(storedFormData) : initialFormData;
+    } catch (error) {
+      console.error("Failed to parse stored form data:", error);
+      return initialFormData;
+    }
   });
 
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -38,58 +43,49 @@ const LottoForm = () => {
     }, 1000);
     return () => clearInterval(timerID);
   }, []);
-useEffect(() => {
-  try {
-    const storedFormData = localStorage.getItem('lottoFormData');
-    if (storedFormData) {
-      setFormData(JSON.parse(storedFormData));
-    }
-  } catch (error) {
-    console.error("Failed to read from localStorage:", error);
-  }
-}, []);
 
-useEffect(() => {
-  try {
-    localStorage.setItem('lottoFormData', JSON.stringify(formData));
-  } catch (error) {
-    console.error("Failed to write to localStorage:", error);
-  }
-}, [formData]);
+  useEffect(() => {
+    try {
+      localStorage.setItem('lottoFormData', JSON.stringify(formData));
+    } catch (error) {
+      console.error("Failed to write to localStorage:", error);
+    }
+  }, [formData]);
 
   const handleChange = (e, denomination, type) => {
-  const { name, value } = e.target;
+    const { name, value } = e.target;
 
-  setFormData(prevState => {
-    const updatedFormData = { ...prevState };
+    setFormData(prevState => {
+      const updatedFormData = { ...prevState };
 
-    if (name === 'name' || name === 'payout' || name === 'lotterySale') {
-      updatedFormData[name] = value;
-    } else {
-      const numValue = parseFloat(value) || '';
-      updatedFormData.lotto[denomination][type] = numValue;
+      if (name === 'name' || name === 'payout' || name === 'lotterySale') {
+        updatedFormData[name] = value;
+      } else {
+        const numValue = parseFloat(value) || '';
+        updatedFormData.lotto[denomination][type] = numValue;
 
-      if (type === 'add' || type === 'close') {
-        if (updatedFormData.lotto[denomination].close === 0 || updatedFormData.lotto[denomination].close === '') {
-          updatedFormData.lotto[denomination].sold = '';
-          updatedFormData.lotto[denomination].dollar = updatedFormData.lotto[denomination].close * updatedFormData.lotto[denomination].add;
-        } else {
-          updatedFormData.lotto[denomination].sold =
-            updatedFormData.lotto[denomination].add -
-            updatedFormData.lotto[denomination].close;
-          updatedFormData.lotto[denomination].dollar =
-            denomination * updatedFormData.lotto[denomination].sold;
+        if (type === 'add' || type === 'close') {
+          if (updatedFormData.lotto[denomination].close === 0 || updatedFormData.lotto[denomination].close === '') {
+            updatedFormData.lotto[denomination].sold = '';
+            updatedFormData.lotto[denomination].dollar = updatedFormData.lotto[denomination].close * updatedFormData.lotto[denomination].add;
+          } else {
+            updatedFormData.lotto[denomination].sold = updatedFormData.lotto[denomination].add - updatedFormData.lotto[denomination].close;
+            updatedFormData.lotto[denomination].dollar = denomination * updatedFormData.lotto[denomination].sold;
+          }
         }
       }
-    }
 
-    return updatedFormData;
-  });
-};
-  
+      return updatedFormData;
+    });
+  };
+
   const handleReset = () => {
     setFormData(initialFormData);
-    localStorage.removeItem('lottoFormData');
+    try {
+      localStorage.removeItem('lottoFormData');
+    } catch (error) {
+      console.error("Failed to remove from localStorage:", error);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -116,7 +112,7 @@ useEffect(() => {
             id="name"
             name="name"
             value={formData.name}
-             onChange={(e) => handleChange(e)}
+            onChange={(e) => handleChange(e)}
             required
           />
         </div>
@@ -163,24 +159,24 @@ useEffect(() => {
             <tr>
               <td colSpan="2">
                 <div className="form-row">
-                 <div className="input-group">
-  <label>Pay-out</label>
-  <input
-    type="number"
-    name="payout"
-    value={formData.payout}
-    onChange={(e) => handleChange(e)}
-  />
-</div>
-<div className="input-group">
-  <label>Lottery sale</label>
-  <input
-    type="number"
-    name="lotterySale"
-    value={formData.lotterySale}
-    onChange={(e) => handleChange(e)}
-  />
-</div>
+                  <div className="input-group">
+                    <label>Pay-out</label>
+                    <input
+                      type="number"
+                      name="payout"
+                      value={formData.payout}
+                      onChange={(e) => handleChange(e)}
+                    />
+                  </div>
+                  <div className="input-group">
+                    <label>Lottery sale</label>
+                    <input
+                      type="number"
+                      name="lotterySale"
+                      value={formData.lotterySale}
+                      onChange={(e) => handleChange(e)}
+                    />
+                  </div>
                 </div>
               </td>
               <td colSpan="2">Total</td>

@@ -54,7 +54,7 @@ const LottoForm = () => {
       updatedFormData.lotto[denomination][type] = numValue;
 
       if (type === 'add' || type === 'close') {
-        if (updatedFormData.lotto[denomination].close === 0 || updatedFormData.lotto[denomination].close === NULL ) {
+        if (updatedFormData.lotto[denomination].close === 0 || updatedFormData.lotto[denomination].close === '' ) {
           updatedFormData.lotto[denomination].sold = 0;
           updatedFormData.lotto[denomination].dollar = denomination * updatedFormData.lotto[denomination].add;
         } else {

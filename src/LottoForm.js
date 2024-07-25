@@ -44,26 +44,29 @@ const LottoForm = () => {
   }, [formData]);
 
   const handleChange = (e, denomination, type) => {
-    const value = parseFloat(e.target.value) || 0;
+    const { name, value } = e.target;
     const updatedFormData = { ...formData };
 
-    updatedFormData.lotto[denomination][type] = value;
+    if (name === 'name' || name === 'payout' || name === 'lotterySale') {
+      updatedFormData[name] = parseFloat(value) || value;
+    } else {
+      const numValue = parseFloat(value) || 0;
+      updatedFormData.lotto[denomination][type] = numValue;
 
-    if (type === 'add' || type === 'close') {
-      if (updatedFormData.lotto[denomination].close === 0 || updatedFormData.lotto[denomination].close === '') {
-        updatedFormData.lotto[denomination].sold = 0;
-        updatedFormData.lotto[denomination].dollar = denomination * updatedFormData.lotto[denomination].add;
-      } else {
-        updatedFormData.lotto[denomination].sold =
-          updatedFormData.lotto[denomination].add -
-          updatedFormData.lotto[denomination].close;
-        updatedFormData.lotto[denomination].dollar =
-          denomination * updatedFormData.lotto[denomination].sold;
+      if (type === 'add' || type === 'close') {
+        if (updatedFormData.lotto[denomination].close === 0 || updatedFormData.lotto[denomination].close === NULL ) {
+          updatedFormData.lotto[denomination].sold = 0;
+          updatedFormData.lotto[denomination].dollar = denomination * updatedFormData.lotto[denomination].add;
+        } else {
+          updatedFormData.lotto[denomination].sold =
+            updatedFormData.lotto[denomination].add -
+            updatedFormData.lotto[denomination].close;
+          updatedFormData.lotto[denomination].dollar =
+            denomination * updatedFormData.lotto[denomination].sold;
+        }
       }
-    }
-    setFormData(updatedFormData);
-  };
-
+    };
+    
   const handleReset = () => {
     setFormData(initialFormData);
     localStorage.removeItem('lottoFormData');
@@ -77,11 +80,6 @@ const LottoForm = () => {
   const totalDollar = Object.values(formData.lotto)
     .reduce((acc, denominationData) => acc + denominationData.dollar, 0)
     .toFixed(2);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: parseFloat(value) || 0 });
-  };
 
   return (
     <div className="lotto-form">

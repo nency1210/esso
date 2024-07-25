@@ -44,8 +44,10 @@ const LottoForm = () => {
   }, [formData]);
 
   const handleChange = (e, denomination, type) => {
-    const { name, value } = e.target;
-    const updatedFormData = { ...formData };
+  const { name, value } = e.target;
+
+  setFormData(prevState => {
+    const updatedFormData = { ...prevState };
 
     if (name === 'name' || name === 'payout' || name === 'lotterySale') {
       updatedFormData[name] = value;
@@ -54,7 +56,7 @@ const LottoForm = () => {
       updatedFormData.lotto[denomination][type] = numValue;
 
       if (type === 'add' || type === 'close') {
-        if (updatedFormData.lotto[denomination].close === 0 ) {
+        if (updatedFormData.lotto[denomination].close === 0) {
           updatedFormData.lotto[denomination].sold = 0;
           updatedFormData.lotto[denomination].dollar = denomination * updatedFormData.lotto[denomination].add;
         } else {
@@ -66,9 +68,11 @@ const LottoForm = () => {
         }
       }
     }
-    setFormData(updatedFormData);
-  };
-    
+
+    return updatedFormData;
+  });
+};
+  
   const handleReset = () => {
     setFormData(initialFormData);
     localStorage.removeItem('lottoFormData');
@@ -98,7 +102,7 @@ const LottoForm = () => {
             id="name"
             name="name"
             value={formData.name}
-            onChange={handleChange}
+             onChange={(e) => handleChange(e)}
             required
           />
         </div>

@@ -111,3 +111,77 @@ const LottoForm = () => {
               <th>Close</th>
               <th>Sold</th>
               <th>Dollar</th>
+            </tr>
+          </thead>
+          <tbody>
+            {denominations.map((denomination) => (
+              <tr key={denomination}>
+                <td>{`$${denomination}`}</td>
+                <td>
+                  <input
+                    type="number"
+                    value={formData.lotto[denomination].open}
+                    onChange={(e) => handleChange(e, denomination, 'open')}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    value={formData.lotto[denomination].add}
+                    onChange={(e) => handleChange(e, denomination, 'add')}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    value={formData.lotto[denomination].close}
+                    onChange={(e) => handleChange(e, denomination, 'close')}
+                  />
+                </td>
+                <td>{formData.lotto[denomination].sold}</td>
+                <td>{formData.lotto[denomination].dollar.toFixed(2)}</td>
+              </tr>
+            ))}
+            <tr>
+              <td colSpan="2">
+                <div className="form-row">
+                  <div className="input-group">
+                    <label>Pay-out</label>
+                    <input
+                      type="number"
+                      name="payout"
+                      value={formData.payout}
+                      onChange={handleInputChange}
+                      placeholder="Enter amount"
+                    />
+                  </div>
+                  <div className="input-group">
+                    <label>Lottery sale</label>
+                    <input
+                      type="number"
+                      name="lotterySale"
+                      value={formData.lotterySale}
+                      onChange={handleInputChange}
+                      placeholder="Enter amount"
+                    />
+                  </div>
+                </div>
+              </td>
+              <td colSpan="2">Total</td>
+              <td colSpan="2">{totalDollar}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div className="form-row">
+          <button type="submit">Submit</button>
+          <button type="button" onClick={handleReset}>Reset</button>
+        </div>
+      </form>
+      <div className="form-row">
+        <Link to="/" className="link-button">Back: Till Form</Link>
+      </div>
+    </div>
+  );
+};
+
+export default LottoForm;

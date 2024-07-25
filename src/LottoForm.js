@@ -98,7 +98,7 @@ const LottoForm = () => {
             id="name"
             name="name"
             value={formData.name}
-            onChange={handleInputChange}
+            onChange={handleChange}
             required
           />
         </div>
@@ -151,7 +151,7 @@ const LottoForm = () => {
                       type="number"
                       name="payout"
                       value={formData.payout}
-                      onChange={handleInputChange}
+                      onChange={handleChange}
                       placeholder="Enter amount"
                     />
                   </div>
@@ -161,7 +161,7 @@ const LottoForm = () => {
                       type="number"
                       name="lotterySale"
                       value={formData.lotterySale}
-                      onChange={handleInputChange}
+                      onChange={handleChange}
                       placeholder="Enter amount"
                     />
                   </div>

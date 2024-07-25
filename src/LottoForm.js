@@ -38,10 +38,24 @@ const LottoForm = () => {
     }, 1000);
     return () => clearInterval(timerID);
   }, []);
+useEffect(() => {
+  try {
+    const storedFormData = localStorage.getItem('lottoFormData');
+    if (storedFormData) {
+      setFormData(JSON.parse(storedFormData));
+    }
+  } catch (error) {
+    console.error("Failed to read from localStorage:", error);
+  }
+}, []);
 
-  useEffect(() => {
+useEffect(() => {
+  try {
     localStorage.setItem('lottoFormData', JSON.stringify(formData));
-  }, [formData]);
+  } catch (error) {
+    console.error("Failed to write to localStorage:", error);
+  }
+}, [formData]);
 
   const handleChange = (e, denomination, type) => {
   const { name, value } = e.target;

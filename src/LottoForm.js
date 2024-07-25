@@ -4,22 +4,25 @@ import { Link } from 'react-router-dom';
 
 const LottoForm = () => {
   const denominations = [2, 3, 5, 10, 20, 25, 30, 50];
+  const currentDate = new Date();
+  const offset = currentDate.getTimezoneOffset() * 60000; 
+  const localDate = new Date(currentDate.getTime() - offset); 
 
   const initialFormData = {
     name: '',
-    date: new Date().toISOString().split('T')[0], 
+    date: localDate.toISOString().split('T')[0],
     lotto: denominations.reduce((acc, denomination) => {
       acc[denomination] = {
-        open: '',
+        open: '' ,
         add: '',
-        close: 0,
+        close: '',
         sold: '',
         dollar: 0,
       };
       return acc;
     }, {}),
-    payout: 0,
-    lotterySale: 0,
+    payout: '',
+    lotterySale: '',
   };
 
   const [formData, setFormData] = useState(() => {
@@ -39,43 +42,23 @@ const LottoForm = () => {
   useEffect(() => {
     localStorage.setItem('lottoFormData', JSON.stringify(formData));
   }, [formData]);
-  const handleNameChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
-  };
-  
-  const handleLottoChange = (e) => {
-    const { name, value } = e.target;
-    const inputValue = parseFloat(value) || '';
-    if (name === 'payout') {
-
-    setFormData(prevState => ({
-      ...prevState,
-      payout:inputValue
-    }));}
-    else if (name === 'lotterySale') {
-      setFormData(prevState => ({
-        ...prevState,
-        lotterySale:inputValue
-      }));
-    }
-  };
-
 
   const handleChange = (e, denomination, type) => {
-    const value = parseFloat(e.target.value) || 0;
-    const updatedFormData = { ...formData };
+  const { name, value } = e.target;
 
-    updatedFormData.lotto[denomination][type] = value;
+  setFormData(prevState => {
+    const updatedFormData = { ...prevState };
 
+    if (name === 'name' || name === 'payout' || name === 'lotterySale') {
+      updatedFormData[name] = value;
+    } else {
+      const numValue = parseFloat(value) || '';
+      updatedFormData.lotto[denomination][type] = numValue;
 
       if (type === 'add' || type === 'close') {
-        if (updatedFormData.lotto[denomination].close === 0) {
-          updatedFormData.lotto[denomination].sold = 0;
-          // updatedFormData.lotto[denomination].dollar = denomination * updatedFormData.lotto[denomination].add;
+        if (updatedFormData.lotto[denomination].close === 0 || updatedFormData.lotto[denomination].close === '') {
+          updatedFormData.lotto[denomination].sold = '';
+          updatedFormData.lotto[denomination].dollar = updatedFormData.lotto[denomination].close * updatedFormData.lotto[denomination].add;
         } else {
           updatedFormData.lotto[denomination].sold =
             updatedFormData.lotto[denomination].add -
@@ -84,12 +67,11 @@ const LottoForm = () => {
             denomination * updatedFormData.lotto[denomination].sold;
         }
       }
-      setFormData(updatedFormData);
     }
 
-   
-
-
+    return updatedFormData;
+  });
+};
   
   const handleReset = () => {
     setFormData(initialFormData);
@@ -120,7 +102,7 @@ const LottoForm = () => {
             id="name"
             name="name"
             value={formData.name}
-             onChange={handleNameChange}
+             onChange={(e) => handleChange(e)}
             required
           />
         </div>
@@ -173,8 +155,7 @@ const LottoForm = () => {
     type="number"
     name="payout"
     value={formData.payout}
-    onChange={(e) => handleLottoChange(e)}
-    placeholder="Enter amount"
+    onChange={(e) => handleChange(e)}
   />
 </div>
 <div className="input-group">
@@ -183,8 +164,7 @@ const LottoForm = () => {
     type="number"
     name="lotterySale"
     value={formData.lotterySale}
-    onChange={(e) => handleLottoChange(e)}
-    placeholder="Enter amount"
+    onChange={(e) => handleChange(e)}
   />
 </div>
                 </div>

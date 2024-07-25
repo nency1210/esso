@@ -49,6 +49,7 @@ const LottoForm = () => {
   
   const handleLottoChange = (e) => {
     const { name, value } = e.target;
+    const inputValue = parseFloat(value) || '';
     if (name === 'payout') {
 
     setFormData(prevState => ({

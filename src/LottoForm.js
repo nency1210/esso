@@ -3,7 +3,7 @@ import './LottoForm.css';
 import { Link } from 'react-router-dom';
 
 const LottoForm = () => {
-  const denominations = [2, 3, 5, 10, 20, 25, 30, 50];
+  const denominations = [2, 3, 4, 5, 10, 20, 25, 30, 50];
   const currentDate = new Date();
   const offset = currentDate.getTimezoneOffset() * 60000;
   const localDate = new Date(currentDate.getTime() - offset);
